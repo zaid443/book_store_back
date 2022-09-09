@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-# TODO: top_rated, new_arrival, best_seller functions to set them.. and images
+# TODO: images Users
 class Entity(models.Model):
     class Meta:
         abstract = True
