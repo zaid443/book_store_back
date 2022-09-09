@@ -40,7 +40,6 @@ class ItemsSchemaIn(Schema):
     user_id: int
     book_id: int
     qty: int
-    inCart: bool
 
 class SavedBookSchemaOut(Schema):
     book: BookSchema

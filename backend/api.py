@@ -63,6 +63,7 @@ def myFunction5(request, added_book: ItemsSchemaIn):
         qty=added_book.qty,
         inCart=True
     )
+    return {"msg": "Book Added Successfully",}
 
 # when u press on the cart button
 @myRouters.get("/get_personal_cart{user_ids}", response=List[ItemsSchemaOut])
@@ -75,18 +76,21 @@ def myFunction6(request, user_ids: int):
 def myFunction8(request, user_ids: int):
     booksInCart = Items.objects.filter(user_id=user_ids, inCart=True)
     data = list(booksInCart.values())
-    for i in range(len(data)):
-        qty = (data[i]['qty'])
-        objects = (Book.objects.get(id=data[i]['book_id']))
-        objects.total_sales += qty
-        objects.save()
-        objects = booksInCart[i]
-        objects.inCart = False
-        objects.isBought = True
-        objects.save()
-    return {
-        "msg": "Bought successfully",
-    }
+    if(len(data) != 0):
+        try:
+            for i in range(len(data)):
+                qty = (data[i]['qty'])
+                objects = (Book.objects.get(id=data[i]['book_id']))
+                objects.total_sales += qty
+                objects.save()
+                objects = booksInCart[i]
+                objects.inCart = False
+                objects.isBought = True
+                objects.save()
+            return {"msg": "Items Bought successfully",}
+        except: 
+            return{"msg": "Try Again Please",}
+    return {"msg": "No Books To Buy",}
 
 # when u press on the cart button
 @myRouters.get("/get_total_items_price_and_qty{user_ids}")
