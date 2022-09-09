@@ -26,9 +26,7 @@ class Book(Entity):
     genre = models.ForeignKey('Genre', verbose_name='genre', related_name='books', on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey('Author', verbose_name='author', related_name='books', null=True, blank=True, on_delete=models.SET_NULL)
     savedBooks = models.ManyToManyField("Saved_Books", verbose_name=("savedbook"),related_name="books", blank=True, null=True)
-    # best_seller = models.BooleanField('best_seller')  # delete
-    # new_arrival = models.BooleanField('new_arrival')  # delete
-    # top_rated = models.BooleanField('top_rated')  # delete
+
     def __str__(self):
         return self.name
 
@@ -50,15 +48,6 @@ class Items(Entity):
 
     def __str__(self):
         return f'{self.book.name}'
-
-    @property
-    def Items_total_price(self):
-        return sum(i.book.price * i.qty for i in self.all())
-
-    @property
-    def Items_total_pieces(self):
-        return sum(i.qty for i in self.filter(inCart=True, isBought=False))
-
 
 class Genre(Entity):
     name = models.CharField('name', max_length=255)
