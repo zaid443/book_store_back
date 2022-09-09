@@ -1,10 +1,6 @@
 from decimal import Decimal
 from ninja import Schema
 
-# Note: some of them are useless just for testing
-# image doesnt works to not used for now
-
-
 class AuthorSchema(Schema):  # showed within book
     name: str
 
@@ -15,17 +11,16 @@ class GenreSchema(Schema):  # showed within book
 
 class GenresSchemaOut(Schema):  # showed in search default
     name: str
-    #image: imageUrl
-
+    authorImageUrl: str
 
 class AuthorsSchemaOut(Schema):  # showed in search default
     name: str
-    #image: imageUrl
+    authorImageUrl: str
 
 
 class BookSchema(Schema):
     name: str
-    #book_image: Image.name
+    bookImageUrl: str
     description: str
     price: Decimal
     rate: Decimal
@@ -54,11 +49,11 @@ class ItemsSchemaIn(Schema):
     user_id: int
     book_id: int
     qty: int
-    itemConditionInCart: bool
+    removeFromCart: bool
 
 
 class SavedBookSchemaOut(Schema):
-    book: BookSchema
+    book: BookSchemaOut
 
 
 class ErrorMesssage(Schema):
