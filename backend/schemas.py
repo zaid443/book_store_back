@@ -2,6 +2,7 @@ from decimal import Decimal
 from ninja import Schema
 
 # Note: some of them are useless just for testing
+# image doesnt works to not used for now
 
 
 class AuthorSchema(Schema):
@@ -10,7 +11,7 @@ class AuthorSchema(Schema):
 
 class GenreSchema(Schema):
     name: str
-    # image: Image. #not needed
+    # image: Image. 
     is_active: bool
 
 

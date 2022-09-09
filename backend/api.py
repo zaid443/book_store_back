@@ -7,7 +7,7 @@ from backend.schemas import BookSchemaIn, BookSchemaOut, ItemsSchemaIn, ItemsSch
 myRouters = Router()
 
 
-@myRouters.post("/create_book", response=BookSchemaOut)
+@myRouters.post("/create_book", response=BookSchemaOut)#testing
 def myFunction1(request, newBook: BookSchemaIn):
     return Book.objects.create(name=newBook.name, description=newBook.description, price=newBook.price, rate=newBook.rate, pages=newBook.pages, genre_id=newBook.genre_id, author_id=newBook.author_id, best_seller=newBook.best_seller, new_arrival=newBook.new_arrival, top_rated=newBook.top_rated, saved=newBook.saved,)
 
@@ -34,7 +34,7 @@ def myFunction2(request, user_ids: int, book_ids: int, saveCondition:bool):
     objectss.delete()
     return {"msg": "unsaved successfully",}
 
-#when u press on your profile
+#when u press on saved
 @myRouters.get("/get_all_saved_books{user_ids}", response=List[SavedBookSchemaOut])
 def myFunction2(request, user_ids: int):
     return Saved_Books.objects.filter(user_id= user_ids, saved= True)

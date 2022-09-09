@@ -1,12 +1,8 @@
 from django.contrib import admin
-
 from .models import Book, Author, Genre, Items
 
-# Register your models here.
-
-
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['name', 'pages', 'genre', 'author',]
+    list_display = ['name', 'pages', 'genre', 'author','total_sales']
 
 
 class ItemsAdmin(admin.ModelAdmin):
