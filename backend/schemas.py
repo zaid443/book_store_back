@@ -21,10 +21,7 @@ class BookSchema(Schema):
     price: Decimal
     rate: Decimal
     pages: int
-    best_seller: bool
-    new_arrival: bool
-    top_rated: bool
-    saved: bool
+    
 
 
 class BookSchemaOut(BookSchema):
@@ -44,6 +41,8 @@ class ItemsSchemaIn(Schema):
     qty: int
     inCart: bool
 
+class SavedBookSchemaOut(Schema):
+    book: BookSchema
 
 class ItemsSchemaOut(Schema):
     book: BookSchemaOut

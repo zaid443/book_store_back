@@ -6,7 +6,7 @@ from .models import Book, Author, Genre, Items
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['name', 'pages', 'genre', 'author', 'top_rated']
+    list_display = ['name', 'pages', 'genre', 'author',]
 
 
 class ItemsAdmin(admin.ModelAdmin):
