@@ -2,18 +2,11 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-# TODO: images users
-class Entity(models.Model):
-    class Meta:
-        abstract = True
-    published = models.DateField(editable=True, verbose_name='Published Data')
-    created = models.DateTimeField(editable=False, auto_now_add=True)
-    updated = models.DateTimeField(editable=False, auto_now=True)
 
-
-class Book(Entity):
+class Book(models.Model):
     name = models.CharField('name', max_length=255)
     bookImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
+    published = models.DateField(editable=True, verbose_name='Published Data')
     description = models.TextField('description', null=True, blank=True)
     price = models.DecimalField('price', max_digits=10, decimal_places=2)
     rate = models.DecimalField('rate', blank=True, null=True, max_digits=2, decimal_places=1)
@@ -21,7 +14,6 @@ class Book(Entity):
     total_sales = models.IntegerField()
     genre = models.ForeignKey('Genre', verbose_name='genre', related_name='books', on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey('Author', verbose_name='author', related_name='books', null=True, blank=True, on_delete=models.SET_NULL)
-    #savedBooks = models.ManyToManyField("Saved_Books", verbose_name=("savedbook"),related_name="books", blank=True, null=True)
     language = models.CharField('Language',max_length=10,choices=[
         ('Arabic','Arabic'),
         ('English','English'),
