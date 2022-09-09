@@ -131,7 +131,7 @@ def myFunction15(request):
 # new arrival
 @myRouters.get("/get_10top_new_arrival", response=List[BookSchemaOut])
 def myFunction15(request):
-    return {Book.objects.order_by("created")}
+    return Book.objects.order_by("published").reverse()
 
 
 

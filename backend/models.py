@@ -6,7 +6,7 @@ User = get_user_model()
 class Entity(models.Model):
     class Meta:
         abstract = True
-    published = models.DateField(editable=True, auto_now_add=True)
+    published = models.DateField(editable=True, verbose_name='Published Data')
     created = models.DateTimeField(editable=False, auto_now_add=True)
     updated = models.DateTimeField(editable=False, auto_now=True)
 
@@ -30,14 +30,14 @@ class Book(Entity):
     def __str__(self):
         return self.name
 
-class Saved_Books(Entity):
+class Saved_Books(models.Model):
     user = models.ForeignKey(User, verbose_name=("user_saved_Books"), on_delete=models.CASCADE)
     book = models.ForeignKey(Book, verbose_name=("saved_Books"), on_delete=models.CASCADE, related_name='here')
     saved = models.BooleanField('isSaved')
     def __str__(self):
         return self.book.name
     
-class Items(Entity):
+class Items(models.Model):
     user = models.ForeignKey(User, verbose_name='user', related_name='DesiredBooks', on_delete=models.CASCADE)
     book = models.ForeignKey(Book, verbose_name='book', on_delete=models.CASCADE)
     qty = models.IntegerField(default=1)
@@ -46,14 +46,14 @@ class Items(Entity):
     def __str__(self):
         return f'{self.book.name}'
 
-class Genre(Entity):
+class Genre(models.Model):
     name = models.CharField('name', max_length=255)
     image = models.ImageField('image', upload_to='images/') # not needed but its actually needed because of the design
     is_active = models.BooleanField('is active')
     def __str__(self):
         return f'{self.name}'
 
-class Author(Entity):
+class Author(models.Model):
     name = models.CharField('name', max_length=255)
     image = models.ImageField('image', upload_to='images/') # not needed but its actually needed because of the design
     is_active = models.BooleanField('is active')
