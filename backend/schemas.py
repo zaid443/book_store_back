@@ -33,18 +33,18 @@ class BookSchemaOut(BookSchema):
     author: AuthorSchema
 
 
-class BookSchemaIn(BookSchema):  # testing 
+class BookSchemaIn(BookSchema):  # testing
     genre_id: int
     author_id: int
 
 
-class DesiredBookSchema(Schema):
+class ItemsSchemaIn(Schema):
     user_id: int
     book_id: int
     qty: int
+    inCart: bool
 
 
-class DesiredBookSchemaOut(Schema):
-    user_id: int
+class ItemsSchemaOut(Schema):
     book: BookSchemaOut
     qty: int
