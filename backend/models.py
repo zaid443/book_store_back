@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-# TODO: images Users
+# TODO: images users
 class Entity(models.Model):
     class Meta:
         abstract = True

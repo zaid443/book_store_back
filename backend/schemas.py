@@ -45,6 +45,11 @@ class BookSchemaIn(BookSchema):  # testing
     author_id: int
 
 
+class ItemsSchemaOut(Schema):
+    book: BookSchemaOut
+    qty: int
+
+
 class ItemsSchemaIn(Schema):
     user_id: int
     book_id: int
@@ -56,6 +61,5 @@ class SavedBookSchemaOut(Schema):
     book: BookSchema
 
 
-class ItemsSchemaOut(Schema):
-    book: BookSchemaOut
-    qty: int
+class ErrorMesssage(Schema):
+    detial:str
