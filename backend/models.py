@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-# TODO: top rated, new arrival, best seller functions to set them
+# TODO: top_rated, new_arrival, best_seller functions to set them.. and images
 class Entity(models.Model):
     class Meta:
         abstract = True
+    published = models.DateField(editable=True, auto_now_add=True)
     created = models.DateTimeField(editable=False, auto_now_add=True)
     updated = models.DateTimeField(editable=False, auto_now=True)
 
@@ -22,12 +23,16 @@ class Book(Entity):
     genre = models.ForeignKey('Genre', verbose_name='genre', related_name='books', on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey('Author', verbose_name='author', related_name='books', null=True, blank=True, on_delete=models.SET_NULL)
     savedBooks = models.ManyToManyField("Saved_Books", verbose_name=("savedbook"),related_name="books", blank=True, null=True)
+    language = models.CharField('Language',max_length=10,choices=[
+        ('Arabic','Arabic'),
+        ('English','English'),
+    ])
     def __str__(self):
         return self.name
 
 class Saved_Books(Entity):
-    user = models.ForeignKey(User, verbose_name=("user_saved_Books"), on_delete=models.DO_NOTHING)
-    book = models.ForeignKey(Book, verbose_name=("saved_Books"), on_delete=models.DO_NOTHING, related_name='here')
+    user = models.ForeignKey(User, verbose_name=("user_saved_Books"), on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, verbose_name=("saved_Books"), on_delete=models.CASCADE, related_name='here')
     saved = models.BooleanField('isSaved')
     def __str__(self):
         return self.book.name
@@ -50,5 +55,7 @@ class Genre(Entity):
 
 class Author(Entity):
     name = models.CharField('name', max_length=255)
+    image = models.ImageField('image', upload_to='images/') # not needed but its actually needed because of the design
+    is_active = models.BooleanField('is active')
     def __str__(self):
         return f'{self.name}'

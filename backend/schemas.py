@@ -5,14 +5,22 @@ from ninja import Schema
 # image doesnt works to not used for now
 
 
-class AuthorSchema(Schema):
+class AuthorSchema(Schema):  # showed within book
     name: str
 
 
-class GenreSchema(Schema):
+class GenreSchema(Schema):  # showed within book
     name: str
-    # image: Image. 
-    is_active: bool
+
+
+class GenresSchemaOut(Schema):  # showed in search default
+    name: str
+    #image: imageUrl
+
+
+class AuthorsSchemaOut(Schema):  # showed in search default
+    name: str
+    #image: imageUrl
 
 
 class BookSchema(Schema):
@@ -22,7 +30,8 @@ class BookSchema(Schema):
     price: Decimal
     rate: Decimal
     pages: int
-    
+    language: str
+    total_sales: int
 
 
 class BookSchemaOut(BookSchema):
@@ -40,9 +49,12 @@ class ItemsSchemaIn(Schema):
     user_id: int
     book_id: int
     qty: int
+    itemConditionInCart: bool
+
 
 class SavedBookSchemaOut(Schema):
     book: BookSchema
+
 
 class ItemsSchemaOut(Schema):
     book: BookSchemaOut
