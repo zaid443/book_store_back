@@ -29,7 +29,8 @@ class Saved_Books(Entity):
     user = models.ForeignKey(User, verbose_name=("user_saved_Books"), on_delete=models.DO_NOTHING)
     book = models.ForeignKey(Book, verbose_name=("saved_Books"), on_delete=models.DO_NOTHING, related_name='here')
     saved = models.BooleanField('isSaved')
-
+    def __str__(self):
+        return self.book.name
     
 class Items(Entity):
     user = models.ForeignKey(User, verbose_name='user', related_name='DesiredBooks', on_delete=models.CASCADE)
