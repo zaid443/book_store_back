@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 from backend.api import myRouters
-api = NinjaAPI()
+from custom_user.api import authorization_router
+from custom_user.authorization import AuthBearer
+api = NinjaAPI(auth=AuthBearer())
+
 api.add_router('', myRouters)
+api.add_router('', authorization_router)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', api.urls)

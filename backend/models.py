@@ -2,11 +2,18 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+# TODO: top rated, new arrival, best seller functions to set them
+class Entity(models.Model):
+    class Meta:
+        abstract = True
+    created = models.DateTimeField(editable=False, auto_now_add=True)
+    updated = models.DateTimeField(editable=False, auto_now=True)
 
-class Book(models.Model):
+
+class Book(Entity):
     name = models.CharField('name', max_length=255)
-    bookImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
-    published = models.DateField(editable=True, verbose_name='Published Data')
+    book_image = models.ImageField('image', upload_to='images/', blank=True, null=True) # maybe replaced with image URL
+  # bookImageUrl = models.URLField(null= True, blank= True) # add this instead of book_image
     description = models.TextField('description', null=True, blank=True)
     price = models.DecimalField('price', max_digits=10, decimal_places=2)
     rate = models.DecimalField('rate', blank=True, null=True, max_digits=2, decimal_places=1)
@@ -14,23 +21,18 @@ class Book(models.Model):
     total_sales = models.IntegerField()
     genre = models.ForeignKey('Genre', verbose_name='genre', related_name='books', on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey('Author', verbose_name='author', related_name='books', null=True, blank=True, on_delete=models.SET_NULL)
-    language = models.CharField('Language',max_length=10,choices=[
-        ('Arabic','Arabic'),
-        ('English','English'),
-    ])
+    savedBooks = models.ManyToManyField("Saved_Books", verbose_name=("savedbook"),related_name="books", blank=True, null=True)
     def __str__(self):
         return self.name
 
-
-class Saved_Books(models.Model):
-    user = models.ForeignKey(User, verbose_name=("user_saved_Books"), on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, verbose_name=("saved_Books"), on_delete=models.CASCADE, related_name='here')
+class Saved_Books(Entity):
+    user = models.ForeignKey(User, verbose_name=("user_saved_Books"), on_delete=models.DO_NOTHING)
+    book = models.ForeignKey(Book, verbose_name=("saved_Books"), on_delete=models.DO_NOTHING, related_name='here')
     saved = models.BooleanField('isSaved')
     def __str__(self):
         return self.book.name
     
-
-class Items(models.Model):
+class Items(Entity):
     user = models.ForeignKey(User, verbose_name='user', related_name='DesiredBooks', on_delete=models.CASCADE)
     book = models.ForeignKey(Book, verbose_name='book', on_delete=models.CASCADE)
     qty = models.IntegerField(default=1)
@@ -39,18 +41,14 @@ class Items(models.Model):
     def __str__(self):
         return f'{self.book.name}'
 
-
-class Genre(models.Model):
+class Genre(Entity):
     name = models.CharField('name', max_length=255)
-    GenreImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
+    image = models.ImageField('image', upload_to='images/') # not needed but its actually needed because of the design
     is_active = models.BooleanField('is active')
     def __str__(self):
         return f'{self.name}'
 
-
-class Author(models.Model):
+class Author(Entity):
     name = models.CharField('name', max_length=255)
-    AuthorImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
-    is_active = models.BooleanField('is active')
     def __str__(self):
         return f'{self.name}'

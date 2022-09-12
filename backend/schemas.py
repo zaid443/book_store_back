@@ -1,32 +1,28 @@
 from decimal import Decimal
 from ninja import Schema
 
-class AuthorSchema(Schema):  # showed within book
+# Note: some of them are useless just for testing
+# image doesnt works to not used for now
+
+
+class AuthorSchema(Schema):
     name: str
 
 
-class GenreSchema(Schema):  # showed within book
+class GenreSchema(Schema):
     name: str
-
-
-class GenresSchemaOut(Schema):  # showed in search default
-    name: str
-    authorImageUrl: str
-
-class AuthorsSchemaOut(Schema):  # showed in search default
-    name: str
-    authorImageUrl: str
+    # image: Image. 
+    is_active: bool
 
 
 class BookSchema(Schema):
     name: str
-    bookImageUrl: str
+    #book_image: Image.name
     description: str
     price: Decimal
     rate: Decimal
     pages: int
-    language: str
-    total_sales: int
+    
 
 
 class BookSchemaOut(BookSchema):
@@ -40,21 +36,14 @@ class BookSchemaIn(BookSchema):  # testing
     author_id: int
 
 
-class ItemsSchemaOut(Schema):
-    book: BookSchemaOut
-    qty: int
-
-
 class ItemsSchemaIn(Schema):
     user_id: int
     book_id: int
     qty: int
-    removeFromCart: bool
-
 
 class SavedBookSchemaOut(Schema):
+    book: BookSchema
+
+class ItemsSchemaOut(Schema):
     book: BookSchemaOut
-
-
-class ErrorMesssage(Schema):
-    detial:str
+    qty: int
