@@ -9,7 +9,7 @@ myRouters = Router()
 
 @myRouters.post("/create_book/", response=BookSchemaOut)#testing
 def myFunction1(request, newBook: BookSchemaIn):
-    return Book.objects.create(name=newBook.name, description=newBook.description, price=newBook.price, rate=newBook.rate, pages=newBook.pages, genre_id=newBook.genre_id, author_id=newBook.author_id, best_seller=newBook.best_seller, new_arrival=newBook.new_arrival, top_rated=newBook.top_rated, saved=newBook.saved,)
+    return Book.objects.create(name=newBook.name, description=newBook.description, price=newBook.price, rate=newBook.rate, pages=newBook.pages, genre_id=newBook.genre_id, author_id=newBook.author_id,total_sales = newBook.total_sales, published=newBook.published)
 
 
 @myRouters.get("/get_all_books/", response=List[BookSchemaOut])

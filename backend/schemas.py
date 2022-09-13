@@ -38,6 +38,7 @@ class BookSchemaOut(BookSchema):
 class BookSchemaIn(BookSchema):  # testing
     genre_id: int
     author_id: int
+    published: str
 
 
 class ItemsSchemaOut(Schema):
