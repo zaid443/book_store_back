@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Book, Author, Genre, Items
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['name', 'pages', 'genre', 'author','total_sales']
+    list_display = ['id', 'name', 'pages', 'genre', 'author','total_sales', 'published']
 
 
 class ItemsAdmin(admin.ModelAdmin):
