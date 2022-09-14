@@ -7,29 +7,29 @@ from backend.schemas import AuthorsSchemaOut, BookSchemaIn, BookSchemaOut, Error
 myRouters = Router()
 
 
-@myRouters.post("/create_book/", response=BookSchemaOut)#testing
+@myRouters.post("/create_book", response=BookSchemaOut)#testing
 def myFunction1(request, newBook: BookSchemaIn):
     return Book.objects.create(name=newBook.name, description=newBook.description, price=newBook.price, rate=newBook.rate, pages=newBook.pages, genre_id=newBook.genre_id, author_id=newBook.author_id, best_seller=newBook.best_seller, new_arrival=newBook.new_arrival, top_rated=newBook.top_rated, saved=newBook.saved,)
 
 
-@myRouters.get("/get_all_books/", response=List[BookSchemaOut])
+@myRouters.get("/get_all_books", response=List[BookSchemaOut])
 def myFunction2(request):
     return Book.objects.all()
 
 
 # sort press on Authors
-@myRouters.get("/get_all_authors/", response=List[AuthorsSchemaOut])
+@myRouters.get("/get_all_authors", response=List[AuthorsSchemaOut])
 def myFunction3(request):
     return Author.objects.all()
 
 
 # sort press on Genres
-@myRouters.get("/get_all_genres/", response=List[GenresSchemaOut])
+@myRouters.get("/get_all_genres", response=List[GenresSchemaOut])
 def myFunction4(request):
     return Genre.objects.all()
 
 
-@myRouters.get("/get_all_books_by_author{author_name}/", response={200: List[BookSchemaOut], 400: ErrorMesssage})
+@myRouters.get("/get_all_books_by_author/{author_name}", response={200: List[BookSchemaOut], 400: ErrorMesssage})
 def myFunction5(request, author_name: str):
     try:
         return Author.objects.get(name=author_name).books.all()
@@ -37,7 +37,7 @@ def myFunction5(request, author_name: str):
         return 400,  {"detial": "Author Doesnt Exists"}
 
 
-@myRouters.get("/get_all_books_by_genre{genre_name}/", response={200: List[BookSchemaOut], 400: ErrorMesssage})
+@myRouters.get("/get_all_books_by_genre/{genre_name}", response={200: List[BookSchemaOut], 400: ErrorMesssage})
 def myFunction6(request, genre_name: str):
     try:    
         return Genre.objects.get(name=genre_name).books.all()
@@ -46,7 +46,7 @@ def myFunction6(request, genre_name: str):
 
 
 #when u press save or unsave button
-@myRouters.get("/save_unsave_book{user_ids}/{book_ids}/{saveCondition}/")
+@myRouters.get("/save_unsave_book/{user_ids}/{book_ids}/{saveCondition}")
 def myFunction7(request, user_ids: int, book_ids: int, saveCondition: bool):
     if saveCondition:
         savedBooks = Saved_Books.objects.filter(user_id=user_ids)
@@ -62,13 +62,13 @@ def myFunction7(request, user_ids: int, book_ids: int, saveCondition: bool):
 
 
 #when u press on saved
-@myRouters.get("/get_all_saved_books{user_ids}/", response=List[SavedBookSchemaOut])
+@myRouters.get("/get_all_saved_books/{user_ids}", response=List[SavedBookSchemaOut])
 def myFunction8(request, user_ids: int):
     return Saved_Books.objects.filter(user_id= user_ids, saved= True)
 
 
 # when u press on add to cart button or remove from cart
-@myRouters.post("/add_remove_cart_items/")
+@myRouters.post("/add_remove_cart_items")
 def myFunction9(request, desiredBook: ItemsSchemaIn):
     if(desiredBook.removeFromCart == False):
         Items.objects.create(
@@ -84,7 +84,7 @@ def myFunction9(request, desiredBook: ItemsSchemaIn):
 
 
 # when u press on the cart button
-@myRouters.get("/get_personal_cart{user_ids}/", response={200:List[ItemsSchemaOut], 400: ErrorMesssage})
+@myRouters.get("/get_personal_cart/{user_ids}", response={200:List[ItemsSchemaOut], 400: ErrorMesssage})
 def myFunction10(request, user_ids: int):
     if data:= Items.objects.filter(user_id=user_ids, inCart=True):
         return data
@@ -92,7 +92,7 @@ def myFunction10(request, user_ids: int):
 
 
 # when u press on the cart button... and you should update it when remove item from cart 
-@myRouters.get("/get_total_items_price_and_qty{user_ids}/")
+@myRouters.get("/get_total_items_price_and_qty/{user_ids}")
 def myFunction12(request, user_ids: int):
     booksInCart = Items.objects.filter(user_id=user_ids, inCart=True)
     data = list(booksInCart.values())
@@ -107,7 +107,7 @@ def myFunction12(request, user_ids: int):
 
 
 # when u press on the buy button in cart page
-@myRouters.get("/Buy_items{user_ids}/")
+@myRouters.get("/Buy_items/{user_ids}")
 def myFunction13(request, user_ids: int):
     booksInCart = Items.objects.filter(user_id=user_ids, inCart=True)
     if data := list(booksInCart.values()):
@@ -128,7 +128,7 @@ def myFunction13(request, user_ids: int):
 
 
 # when u press on your profile
-@myRouters.get("/get_all_purchased_books{user_ids}/", response=List[ItemsSchemaOut])
+@myRouters.get("/get_all_purchased_books/{user_ids}", response=List[ItemsSchemaOut])
 def myFunction14(request, user_ids: int):
     try:
         return Items.objects.filter(user_id=user_ids, isBought=True)
@@ -137,19 +137,19 @@ def myFunction14(request, user_ids: int):
 
 
 # Top sales
-@myRouters.get("/get_10top_sales/", response=List[BookSchemaOut])
+@myRouters.get("/get_10top_sales", response=List[BookSchemaOut])
 def myFunction15(request):
     return Book.objects.order_by("total_sales").reverse()[:10]
 
 
 # Top rated
-@myRouters.get("/get_10top_rated/", response=List[BookSchemaOut])
+@myRouters.get("/get_10top_rated", response=List[BookSchemaOut])
 def myFunction16(request):
     return Book.objects.order_by("rate").reverse()[:10]
 
 
 # new arrival
-@myRouters.get("/get_10top_new_arrival/", response=List[BookSchemaOut])
+@myRouters.get("/get_10top_new_arrival", response=List[BookSchemaOut])
 def myFunction17(request):
     return Book.objects.order_by("published").reverse()[:10]
 
