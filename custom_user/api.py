@@ -1,8 +1,8 @@
 from ninja import Router
 from django.contrib.auth import get_user_model
-from custom_user.schema import AccountIn, AccountOut
-from custom_user.schema import AothorizationOut,SignIn,ErrorSchema
-from custom_user.authorization import AuthBearer, create_token_for_user
+from custom_user.schema import AccountIn
+from custom_user.schema import SignIn
+from custom_user.authorization import create_token_for_user
 
 authorization_router = Router(tags=['authorization'])
 User = get_user_model()
@@ -28,7 +28,8 @@ def signup(request, account_in: AccountIn):
                 'token': token,
                 'account': {
                     'name':new_user.name,
-                    'phone': new_user.phone
+                    'phone': new_user.phone,
+                    'user_id':new_user.id
                     }
             }
 
@@ -50,10 +51,12 @@ def signin(request, signin_in: SignIn):
                 'token': token,
                 'UserAccount': {
                     'name':user.name,
-                    'phone': user.phone
+                    'phone': user.phone,
+                    'user_id': user.id
                     }
             }
 
     if not user:
         return 404, {'detail':'there was an error'}
-    
+
+

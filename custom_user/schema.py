@@ -6,14 +6,14 @@ class AccountIn(Schema):
     password1: str
     password2: str
     
-class AccountOut(Schema):
-    name:str
-    phone: str
+# class AccountOut(Schema):
+#     name:str
+#     phone: str
     
     
-class AothorizationOut(Schema):
-    tokken: str
-    UserAccount: AccountOut
+# class AothorizationOut(Schema):
+#     tokken: str
+#     UserAccount: AccountOut
     
     
     
@@ -22,5 +22,6 @@ class SignIn(Schema):
     password: str
     
     
-class ErrorSchema(Schema):
-    detail:str
+    
+# class ErrorSchema(Schema):
+#     detail:str
