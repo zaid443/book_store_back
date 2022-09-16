@@ -19,10 +19,8 @@ class AuthBearer(HttpBearer):
 
 def create_token_for_user(user):
     token = jwt.encode({'phone': str(user.phone)}, key=settings.SECRET_KEY, algorithm='HS256')
-    print(token)
-    return {
-        'access': str(token)
-    }
+    return str(token)
+    
     
     
     

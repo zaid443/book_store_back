@@ -11,7 +11,7 @@ class GenreSchema(Schema):  # showed within book
 
 class GenresSchemaOut(Schema):  # showed in search default
     name: str
-    authorImageUrl: str
+    genresImageUrl: str
 
 class AuthorsSchemaOut(Schema):  # showed in search default
     name: str
@@ -57,4 +57,4 @@ class SavedBookSchemaOut(Schema):
 
 
 class ErrorMesssage(Schema):
-    detial:str
+    detail:str

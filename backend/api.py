@@ -20,6 +20,7 @@ def myFunction2(request):
 # sort press on Authors
 @myRouters.get("/get_all_authors", response=List[AuthorsSchemaOut])
 def myFunction3(request):
+    print(Author.objects.all())
     return Author.objects.all()
 
 
@@ -34,7 +35,7 @@ def myFunction5(request, author_name: str):
     try:
         return Author.objects.get(name=author_name).books.all()
     except Exception:
-        return 400,  {"detial": "Author Doesnt Exists"}
+        return 400,  {"detail": "Author Doesnt Exists"}
 
 
 @myRouters.get("/get_all_books_by_genre/{genre_name}", response={200: List[BookSchemaOut], 400: ErrorMesssage})
@@ -42,7 +43,7 @@ def myFunction6(request, genre_name: str):
     try:    
         return Genre.objects.get(name=genre_name).books.all()
     except Exception:
-        return 400,  {"detial": "Genre Doesnt Exists"}
+        return 400,  {"detail": "Genre Doesnt Exists"}
 
 
 #when u press save or unsave button
@@ -88,7 +89,7 @@ def myFunction9(request, desiredBook: ItemsSchemaIn):
 def myFunction10(request, user_ids: int):
     if data:= Items.objects.filter(user_id=user_ids, inCart=True):
         return data
-    return 400, {"detial": "Your Cart Is Empty"}
+    return 400, {"detail": "Your Cart Is Empty"}
 
 
 # when u press on the cart button... and you should update it when remove item from cart 
