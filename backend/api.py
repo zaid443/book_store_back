@@ -139,13 +139,12 @@ def myFunction13(request, user_ids: int):
 
 
 # when u press on your profile
-@myRouters.get("/get_all_purchased_books/{user_ids}", response=List[ItemsSchemaOut])
+@myRouters.get("/get_all_purchased_books/{user_ids}", response={200:List[ItemsSchemaOut], 201: ErrorMesssage})
 def myFunction14(request, user_ids: int):
     try:
         return Items.objects.filter(user_id=user_ids, isBought=True)
     except Exception:
-        return{"msg": "No Purchased Books"}
-
+        return 201, {"detail": "No Purchased Books"}
 
 # Top sales
 @myRouters.get("/get_10top_sales", response=List[BookSchemaOut])
