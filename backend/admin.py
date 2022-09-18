@@ -18,7 +18,7 @@ class GenreAdmin(admin.ModelAdmin):
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ['id',  'name']
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id',  'name']
+    list_display = ['id',  'name', 'phone']
 
 
 admin.site.register(Book, BookAdmin)

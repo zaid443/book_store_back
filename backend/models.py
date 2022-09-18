@@ -42,7 +42,7 @@ class Items(models.Model):
 
 class Genre(models.Model):
     name = models.CharField('name', max_length=255)
-    GenreImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
+    genresImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
     is_active = models.BooleanField('is active')
     def __str__(self):
         return f'{self.name}'
@@ -50,7 +50,7 @@ class Genre(models.Model):
 
 class Author(models.Model):
     name = models.CharField('name', max_length=255)
-    AuthorImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
+    authorImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
     is_active = models.BooleanField('is active')
     def __str__(self):
         return f'{self.name}'
