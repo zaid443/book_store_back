@@ -48,9 +48,8 @@ def myFunction6(request, genre_name: str):
 
 
 #when u press save or unsave button
-@myRouters.get("/save_unsave_book/{user_ids}/{book_ids}/{saveCondition}")
-def myFunction7(request, user_ids: int, book_ids: int, saveCondition: bool):
-    if saveCondition:
+@myRouters.get("/save_book/{user_ids}/{book_ids}")
+def myFunction7(request, user_ids: int, book_ids: int,):
         savedBooks = Saved_Books.objects.filter(user_id=user_ids)
         data = list(savedBooks.values())
         saved_books_ids = [datum['book_id'] for datum in data]
@@ -58,7 +57,11 @@ def myFunction7(request, user_ids: int, book_ids: int, saveCondition: bool):
             return {"msg": "Book already saved"}
         Saved_Books.objects.create(user_id=user_ids, book_id=book_ids, saved=True)
         return {"msg": "saved successfully"}
-    if Saved_Books.objects.filter(user_id=user_ids, book_id= book_ids).exists() and not saveCondition:
+
+
+@myRouters.get("/unsave_book/{user_ids}/{book_ids}")
+def myFunction7(request, user_ids: int, book_ids: int):
+    if Saved_Books.objects.filter(user_id=user_ids, book_id= book_ids).exists():
         objectss = Saved_Books.objects.filter(user_id=user_ids, book_id=book_ids)
         objectss.delete()
         return {"msg": "unsaved successfully"}
@@ -72,9 +75,9 @@ def myFunction8(request, user_ids: int):
 
 
 # when u press on add to cart button or remove from cart
-@myRouters.post("/add_remove_cart_items")
+@myRouters.post("/add_cart_items")
 def myFunction9(request, desiredBook: ItemsSchemaIn):
-    if (not(Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id).exists())and  desiredBook.removeFromCart == False):
+    if (not(Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id).exists())):
         Items.objects.create(
             user_id=desiredBook.user_id,
             book_id=desiredBook.book_id,
@@ -83,7 +86,7 @@ def myFunction9(request, desiredBook: ItemsSchemaIn):
         )
         return {"msg": "Book Added Successfully",}
 
-    elif (Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id, inCart = False).exists() and desiredBook.removeFromCart == False):
+    elif (Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id, inCart = False).exists()):
         objects = Items.objects.get(user_id=desiredBook.user_id,book_id=desiredBook.book_id,inCart=False,)
         objects.qty = 0
         objects.save()
@@ -92,18 +95,24 @@ def myFunction9(request, desiredBook: ItemsSchemaIn):
         objects.save()
         return {"msg": "You Already Checked This Book But Its Added Anyway!",}
 
-    elif (Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id, inCart = True).exists() and desiredBook.removeFromCart == False):
+    elif (Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id, inCart = True).exists()):
         objects = Items.objects.get(user_id=desiredBook.user_id,book_id=desiredBook.book_id,inCart=True)
         objects.qty += desiredBook.qty
         objects.save()
         return {"msg": "Qty Increased Successfully",}
 
-    elif(Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id,inCart=True).exists()):
+
+
+
+@myRouters.post("/remove_cart_items")
+def myFunction9(request, desiredBook: ItemsSchemaIn):
+    if(Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id,inCart=True).exists()):
         objectss = Items.objects.get(user_id = desiredBook.user_id, book_id = desiredBook.book_id)
         objectss.inCart = False
         #objectss.isBought = True
         objectss.save()
         return {"msg": "Book Removed Successfully",}
+    return {"msg": "Book is not in cart!",}
 
 
 # when u press on the cart button
