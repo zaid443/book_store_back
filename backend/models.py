@@ -6,7 +6,8 @@ User = get_user_model()
 class Book(models.Model):
     name = models.CharField('name', max_length=255)
     bookImageUrl = models.URLField(null= True, blank= True, default= 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png') # add this instead of book_image
-    published = models.DateField(editable=True, verbose_name='Published Data')
+    published = models.DateField(editable=True, verbose_name='Published Date')
+    arriveData = models.DateTimeField(editable=True, verbose_name='Arrival Date')
     description = models.TextField('description', null=True, blank=True)
     price = models.DecimalField('price', max_digits=10, decimal_places=2)
     rate = models.DecimalField('rate', blank=True, null=True, max_digits=2, decimal_places=1)

@@ -4,7 +4,7 @@ from custom_user.models import CustomUser
 from .models import Book, Author, Genre, Items
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'pages', 'genre', 'author','total_sales', 'published']
+    list_display = ['id', 'name', 'pages', 'genre', 'author','total_sales', 'published', 'arriveData']
 
 
 class ItemsAdmin(admin.ModelAdmin):
