@@ -4,7 +4,7 @@ from typing import List
 from unicodedata import decimal
 from ninja import Router
 from backend.models import Author, Book, Genre, Items, Saved_Books
-from backend.schemas import AuthorsSchemaOut, BookSchemaIn, BookSchemaOut, ErrorMesssage, GenresSchemaOut, ItemsSchemaIn, ItemsSchemaOut, SavedBookSchemaOut
+from backend.schemas import AuthorsSchemaOut, BookSchemaIn, BookSchemaOut, ErrorMesssage, GenresSchemaOut, ItemsDeleteSchema, ItemsSchemaIn, ItemsSchemaOut, SavedBookSchemaOut
 
 myRouters = Router()
 
@@ -105,7 +105,7 @@ def myFunction9(request, desiredBook: ItemsSchemaIn):
 
 
 @myRouters.post("/remove_cart_items")
-def myFunction9(request, desiredBook: ItemsSchemaIn):
+def myFunction9(request, desiredBook: ItemsDeleteSchema):
     if(Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id,inCart=True).exists()):
         objectss = Items.objects.get(user_id = desiredBook.user_id, book_id = desiredBook.book_id)
         objectss.inCart = False
