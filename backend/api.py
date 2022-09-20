@@ -5,6 +5,7 @@ from unicodedata import decimal
 from ninja import Router
 from backend.models import Author, Book, Genre, Items, Saved_Books
 from backend.schemas import AuthorsSchemaOut, BookSchemaIn, BookSchemaOut, ErrorMesssage, GenresSchemaOut, ItemsDeleteSchema, ItemsSchemaIn, ItemsSchemaOut, SavedBookSchemaOut
+from django.db.models import Q
 
 myRouters = Router()
 
@@ -17,6 +18,18 @@ def myFunction1(request, newBook: BookSchemaIn):
 @myRouters.get("/get_all_books", response=List[BookSchemaOut])
 def myFunction2(request):
     return Book.objects.all()
+
+
+@myRouters.get("/search", response={200: List[BookSchemaOut], 201: ErrorMesssage})
+def myFunction2(
+    request, *,
+    q: str = None):
+        results = Book.objects.all()
+        if q:
+            results = results.filter(Q(name__icontains=q)| Q(author__name__icontains=q))
+            return 200, results
+        return 201, {"detail": "No Books"}
+
 
 
 # sort press on Authors
