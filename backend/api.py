@@ -21,7 +21,7 @@ def myFunction2(request):
 
 
 @myRouters.get("/search", response={200: List[BookSchemaOut], 201: ErrorMesssage})
-def myFunction2(
+def myFunction3(
     request, *,
     q: str = None):
         results = Book.objects.all()
@@ -34,18 +34,18 @@ def myFunction2(
 
 # sort press on Authors
 @myRouters.get("/get_all_authors", response=List[AuthorsSchemaOut])
-def myFunction3(request):
+def myFunction4(request):
     return Author.objects.all()
 
 
 # sort press on Genres
 @myRouters.get("/get_all_genres", response=List[GenresSchemaOut])
-def myFunction4(request):
+def myFunction5(request):
     return Genre.objects.all()
 
 
 @myRouters.get("/get_all_books_by_author/{author_name}", response={200: List[BookSchemaOut], 400: ErrorMesssage})
-def myFunction5(request, author_name: str):
+def myFunction6(request, author_name: str):
     try:
         return Author.objects.get(name=author_name).books.all()
     except Exception:
@@ -53,7 +53,7 @@ def myFunction5(request, author_name: str):
 
 
 @myRouters.get("/get_all_books_by_genre/{genre_name}", response={200: List[BookSchemaOut], 400: ErrorMesssage})
-def myFunction6(request, genre_name: str):
+def myFunction7(request, genre_name: str):
     try:    
         return Genre.objects.get(name=genre_name).books.all()
     except Exception:
@@ -62,7 +62,7 @@ def myFunction6(request, genre_name: str):
 
 #when u press save or unsave button
 @myRouters.get("/save_book/{user_ids}/{book_ids}")
-def myFunction7(request, user_ids: int, book_ids: int,):
+def myFunction8(request, user_ids: int, book_ids: int,):
         savedBooks = Saved_Books.objects.filter(user_id=user_ids)
         data = list(savedBooks.values())
         saved_books_ids = [datum['book_id'] for datum in data]
@@ -73,7 +73,7 @@ def myFunction7(request, user_ids: int, book_ids: int,):
 
 
 @myRouters.get("/unsave_book/{user_ids}/{book_ids}")
-def myFunction7(request, user_ids: int, book_ids: int):
+def myFunction9(request, user_ids: int, book_ids: int):
     if Saved_Books.objects.filter(user_id=user_ids, book_id= book_ids).exists():
         objectss = Saved_Books.objects.filter(user_id=user_ids, book_id=book_ids)
         objectss.delete()
@@ -83,13 +83,13 @@ def myFunction7(request, user_ids: int, book_ids: int):
 
 #when u press on saved
 @myRouters.get("/get_all_saved_books/{user_ids}", response=List[SavedBookSchemaOut])
-def myFunction8(request, user_ids: int):
+def myFunction10(request, user_ids: int):
     return Saved_Books.objects.filter(user_id= user_ids, saved= True)
 
 
 # when u press on add to cart button or remove from cart
 @myRouters.post("/add_cart_items")
-def myFunction9(request, desiredBook: ItemsSchemaIn):
+def myFunction11(request, desiredBook: ItemsSchemaIn):
     if (not(Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id).exists())):
         Items.objects.create(
             user_id=desiredBook.user_id,
@@ -118,7 +118,7 @@ def myFunction9(request, desiredBook: ItemsSchemaIn):
 
 
 @myRouters.post("/remove_cart_items")
-def myFunction9(request, desiredBook: ItemsDeleteSchema):
+def myFunction12(request, desiredBook: ItemsDeleteSchema):
     if(Items.objects.filter(user_id=desiredBook.user_id,book_id=desiredBook.book_id,inCart=True).exists()):
         objectss = Items.objects.get(user_id = desiredBook.user_id, book_id = desiredBook.book_id)
         objectss.inCart = False
@@ -130,7 +130,7 @@ def myFunction9(request, desiredBook: ItemsDeleteSchema):
 
 # when u press on the cart button
 @myRouters.get("/get_personal_cart_items/{user_ids}", response={200:List[ItemsSchemaOut], 201: ErrorMesssage})
-def myFunction10(request, user_ids: int):
+def myFunction13(request, user_ids: int):
     if data:= Items.objects.filter(user_id=user_ids, inCart=True):
         return data
     return 201, {"detail": "Your Cart Is Empty"}
@@ -138,7 +138,7 @@ def myFunction10(request, user_ids: int):
 
 # when u press on the cart button... and you should update it when remove item from cart 
 @myRouters.get("/get_total_items_price_and_qty/{user_ids}")
-def myFunction12(request, user_ids: int):
+def myFunction14(request, user_ids: int):
     booksInCart = Items.objects.filter(user_id=user_ids, inCart=True)
     data = list(booksInCart.values())
     totalPrice = 0
@@ -153,7 +153,7 @@ def myFunction12(request, user_ids: int):
 
 # when u press on the buy button in cart page
 @myRouters.get("/Buy_items/{user_ids}")
-def myFunction13(request, user_ids: int):
+def myFunction15(request, user_ids: int):
     booksInCart = Items.objects.filter(user_id=user_ids, inCart=True)
     if data := list(booksInCart.values()):
         try:
@@ -176,7 +176,7 @@ def myFunction13(request, user_ids: int):
 
 # when u press on your profile
 @myRouters.get("/get_all_purchased_books/{user_ids}", response={200:List[ItemsSchemaOut], 201: ErrorMesssage})
-def myFunction14(request, user_ids: int):
+def myFunction16(request, user_ids: int):
     try:
         return Items.objects.filter(user_id=user_ids, isBought=True)
     except Exception:
@@ -185,19 +185,19 @@ def myFunction14(request, user_ids: int):
 
 # Top sales
 @myRouters.get("/get_10top_sales", response=List[BookSchemaOut])
-def myFunction15(request):
+def myFunction17(request):
     return Book.objects.order_by("total_sales").reverse()[:10]
 
 
 # Top rated
 @myRouters.get("/get_10top_rated", response=List[BookSchemaOut])
-def myFunction16(request):
+def myFunction18(request):
     return Book.objects.order_by("rate").reverse()[:10]
 
 
 # new arrival
 @myRouters.get("/get_10top_new_arrival", response=List[BookSchemaOut])
-def myFunction17(request):
+def myFunction19(request):
     return Book.objects.order_by("arriveData").reverse()[:10]
 
 
